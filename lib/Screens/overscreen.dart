@@ -1,9 +1,6 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:get/get.dart';
 import 'package:math/Screens/login.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class OverScreen extends StatefulWidget {
   const OverScreen({super.key});

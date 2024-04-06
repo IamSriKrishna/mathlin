@@ -1,12 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:math/Maps/Booking.dart';
-import 'package:math/Rides/riderverif.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:math/Screens/MainScreen.dart';
 
 class BookRide extends StatefulWidget {
   const BookRide({super.key});
@@ -105,7 +104,7 @@ class _BookRideState extends State<BookRide> {
             ),
             ElevatedButton(
                 onPressed: () {
-                  Get.to(()=>GoogleMapPage());
+                  Get.to(()=>MainScreen());
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 217, 4, 41)),
