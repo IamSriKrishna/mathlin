@@ -51,6 +51,7 @@ dependencies:
   geolocator: ^11.0.0
   curved_navigation_bar: ^1.0.3
   geocoding: ^3.0.0
+  syncfusion_flutter_datepicker: ^25.1.38
   
 
 dev_dependencies:

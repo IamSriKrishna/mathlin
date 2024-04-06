@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:math/Maps/Booking.dart';
+import 'package:math/Maps/Widget/MainTextfield.dart';
 import 'package:math/Maps/Widget/MapAppBar.dart';
 
 class MapScreen extends StatefulWidget {
@@ -53,45 +54,8 @@ class _MapScreenState extends State<MapScreen> {
       backgroundColor: const Color.fromRGBO(254, 250, 224, 1),
       body: CustomScrollView(
         slivers: [
-          const MapCustomAppBar(),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  TextField(
-                    controller: _pickup,
-                    style: const TextStyle(color: Colors.black),
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15)),
-                        hintStyle: const TextStyle(color: Colors.black),
-                        hintText: 'Pick Up Location',
-                        prefixIcon: const Icon(
-                          Icons.location_on_outlined,
-                          color: Colors.red,
-                        )),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  TextField(
-                    controller: _drop,
-                    style: const TextStyle(color: Colors.black),
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15)),
-                        hintStyle: const TextStyle(color: Colors.black),
-                        hintText: 'Drop Location',
-                        prefixIcon: const Icon(
-                          Icons.location_on_outlined,
-                          color: Colors.black,
-                        )),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          const MapCustomAppBar(text: '',),
+          MainTextField(drop: _drop, pickup: _pickup),
           SliverToBoxAdapter(
             child: currentPosition == null
                 ? const Center(child: CircularProgressIndicator())
@@ -100,7 +64,7 @@ class _MapScreenState extends State<MapScreen> {
                     height: MediaQuery.of(context).size.height * 0.4,
                     child: GoogleMap(
                       onTap: (argument) {
-                        Get.to(() => GoogleMapPage());
+                        Get.to(() => const GoogleMapPage());
                       },
                       onMapCreated: (controller) {
                         mapController = controller;
@@ -150,12 +114,12 @@ class _MapScreenState extends State<MapScreen> {
                                       MediaQuery.of(context).size.height * 0.2,
                                   width:
                                       MediaQuery.of(context).size.width * 0.4,
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                       image: DecorationImage(
                                           image: AssetImage(
                                               'images/bike-removebg-preview.png'))),
                                 ),
-                                Text("Bike")
+                                const Text("Bike")
                               ],
                             ),
                           ),
@@ -173,8 +137,7 @@ class _MapScreenState extends State<MapScreen> {
                                       MediaQuery.of(context).size.width * 0.4,
                                   decoration: BoxDecoration(
                                       image: DecorationImage(
-                                          image: AssetImage(
-                                              'images/car.png'))),
+                                          image: AssetImage('images/car.png'))),
                                 ),
                                 Text("Car")
                               ],

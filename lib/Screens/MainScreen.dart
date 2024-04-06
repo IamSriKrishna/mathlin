@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:math/Maps/MapScreen.dart';
+import 'package:math/PreBooking/PreBooking.dart';
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -12,9 +13,7 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
   final List<Widget> _screens = const [
     MapScreen(),
-    Center(
-      child: Text('Pre Booking Screen'),
-    ),
+    PreBooking(),
     Center(
       child: Text('Trip Screen'),
     ),
