@@ -7,7 +7,8 @@ import 'package:pinput/pinput.dart';
 import 'package:get/get.dart';
 
 class MyVerify extends StatefulWidget {
-  const MyVerify({Key? key}) : super(key: key);
+  final String verifyId;
+  const MyVerify({Key? key,required this.verifyId}) : super(key: key);
 
   @override
   State<MyVerify> createState() => _MyVerifyState();
@@ -114,12 +115,13 @@ class _MyVerifyState extends State<MyVerify> {
                       try {
                         PhoneAuthCredential credential =
                             PhoneAuthProvider.credential(
-                                verificationId: RiderDetails.verify,
+                                verificationId: widget.verifyId,
                                 smsCode: code);
 
                         // Sign the user in (or link) with the credential
-                        await auth.signInWithCredential(credential);
-                        Get.off(BookRide());
+                        await auth
+                            .signInWithCredential(credential)
+                            .then((value) => Get.off(BookRide()));
                       } catch (ex) {
                         print("Wrong otp");
                       }

@@ -165,8 +165,10 @@ class _RiderDetailsState extends State<RiderDetails> {
                           (PhoneAuthCredential credential) {},
                       verificationFailed: (FirebaseAuthException e) {},
                       codeSent: (String verificationId, int? resendToken) {
-                        RiderDetails.verify = verificationId;
-                        Get.to(const MyVerify());
+                        setState(() {
+                          RiderDetails.verify = verificationId;
+                        });
+                        Get.to(()=>MyVerify(verifyId:  verificationId));
                       },
                       codeAutoRetrievalTimeout: (String verificationId) {},
                     );

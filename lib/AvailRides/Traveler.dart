@@ -166,7 +166,7 @@ class _TravellerState extends State<Traveller> {
                       verificationFailed: (FirebaseAuthException e) {},
                       codeSent: (String verificationId, int? resendToken) {
                         Traveller.verify = verificationId;
-                        Get.to(const MyVerify());
+                        Get.to(()=>MyVerify(verifyId:verificationId));
                       },
                       codeAutoRetrievalTimeout: (String verificationId) {},
                     );

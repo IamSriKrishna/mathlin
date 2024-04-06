@@ -1,3 +1,4 @@
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -7,26 +8,28 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
 class GoogleMapPage extends StatefulWidget {
-  const GoogleMapPage({super.key});
+  const GoogleMapPage({Key? key}) : super(key: key);
 
   @override
   State<GoogleMapPage> createState() => _GoogleMapPageState();
 }
 
 class _GoogleMapPageState extends State<GoogleMapPage> {
-  final locationController = Location();
+  final Location locationController = Location();
 
-  static const googlePlex = LatLng(37.4223, -122.0848);
-  static const mountainView = LatLng(37.3861, -122.0839);
+  static const LatLng googlePlex = LatLng(37.4223, -122.0848);
+  static const LatLng mountainView = LatLng(37.3861, -122.0839);
 
   LatLng? currentPosition;
   Map<PolylineId, Polyline> polylines = {};
+  late GoogleMapController mapController;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) async => await initializeMap());
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      await initializeMap();
+    });
   }
 
   Future<void> initializeMap() async {
@@ -38,12 +41,15 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: currentPosition == null
-            ? const Center(child: CircularProgressIndicator())
+            ? Center(child: CircularProgressIndicator())
             : GoogleMap(
-                initialCameraPosition: const CameraPosition(
-                  target: googlePlex,
-                  zoom: 13,
+                initialCameraPosition: CameraPosition(
+                  target: currentPosition!,
+                  zoom: 15, // Zoom level for the current location
                 ),
+                onMapCreated: (controller) {
+                  mapController = controller;
+                },
                 markers: {
                   Marker(
                     markerId: const MarkerId('currentLocation'),
@@ -70,9 +76,10 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
     PermissionStatus permissionGranted;
 
     serviceEnabled = await locationController.serviceEnabled();
-    if (serviceEnabled) {
+    if (!serviceEnabled) {
       serviceEnabled = await locationController.requestService();
-    } else {
+    }
+    if (!serviceEnabled) {
       return;
     }
 
@@ -84,7 +91,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
       }
     }
 
-    locationController.onLocationChanged.listen((currentLocation) {
+    locationController.onLocationChanged.listen((LocationData currentLocation) {
       if (currentLocation.latitude != null &&
           currentLocation.longitude != null) {
         setState(() {
@@ -93,14 +100,16 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
             currentLocation.longitude!,
           );
         });
+        // Zoom to the current location when it's available
+        mapController.animateCamera(CameraUpdate.newLatLng(currentPosition!));
       }
     });
   }
 
   Future<List<LatLng>> fetchPolylinePoints() async {
-    final polylinePoints = PolylinePoints();
+    final PolylinePoints polylinePoints = PolylinePoints();
 
-    final result = await polylinePoints.getRouteBetweenCoordinates(
+    final PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       "AIzaSyC9cchYOHolyPlxRGnWvr4a6LIpXfIc1x0",
       PointLatLng(googlePlex.latitude, googlePlex.longitude),
       PointLatLng(mountainView.latitude, mountainView.longitude),
@@ -108,7 +117,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
 
     if (result.points.isNotEmpty) {
       return result.points
-          .map((point) => LatLng(point.latitude, point.longitude))
+          .map((PointLatLng point) => LatLng(point.latitude, point.longitude))
           .toList();
     } else {
       debugPrint(result.errorMessage);
@@ -118,9 +127,9 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
 
   Future<void> generatePolyLineFromPoints(
       List<LatLng> polylineCoordinates) async {
-    const id = PolylineId('polyline');
+    const PolylineId id = PolylineId('polyline');
 
-    final polyline = Polyline(
+    final Polyline polyline = Polyline(
       polylineId: id,
       color: Colors.blueAccent,
       points: polylineCoordinates,
