@@ -52,6 +52,10 @@ dependencies:
   curved_navigation_bar: ^1.0.3
   geocoding: ^3.0.0
   syncfusion_flutter_datepicker: ^25.1.38
+  u_credit_card: ^1.1.0
+  flutter_upi_pay: ^0.0.2
+  flutter_credit_card: ^4.0.1
+  flutter_credit_card_new: ^0.0.4
   
 
 dev_dependencies:
